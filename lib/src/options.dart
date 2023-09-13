@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 
 import 'map_view_settings.dart';
 
-var DEFAULT_LOCATION = LatLng(57.75, 37.61);
+var DEFAULT_LOCATION = LatLng(55.7504461, 37.6174943);
 
 /// Allows you to provide your map's starting properties for [zoom], [rotation]
 /// and [center]. Alternatively you can provide [bounds] instead of [center].
