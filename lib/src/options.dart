@@ -7,7 +7,7 @@ import 'map_view_settings.dart';
 
 var DEFAULT_LOCATION = LatLng(55.7504461, 37.6174943);
 
-/// Allows you to provide your map's starting properties for [zoom], [rotation]
+/// Allows you to provide your map's starting properties for [initialZoom], [rotation]
 /// and [center]. Alternatively you can provide [bounds] instead of [center].
 /// If both, [center] and [bounds] are provided, bounds will take preference
 /// over [center].
@@ -28,7 +28,7 @@ var DEFAULT_LOCATION = LatLng(55.7504461, 37.6174943);
 /// tiles outside the boundaries set by [swPanBoundary] and [nePanBoundary].
 class OpenMapOptions {
   final Crs? crs;
-  final double? zoom;
+  final double? initialZoom;
   final double? rotation;
 
   /// Prints multi finger gesture winner Helps to fine adjust
@@ -101,17 +101,20 @@ class OpenMapOptions {
   final bool? slideOnBoundaries;
   final Size? screenSize;
   final bool? adaptiveBoundaries;
-  final LatLng? _center;
+  final LatLng? _initialCenter;
+  final InteractionOptions? interactionOptions;
   final LatLngBounds? _bounds;
   final FitBoundsOptions? _boundsOptions;
   final LatLng? swPanBoundary;
   final LatLng? nePanBoundary;
-  LatLng? get center => _center;
+
+  LatLng? get center => _initialCenter;
   LatLngBounds? get bounds => _bounds;
   FitBoundsOptions? get boundsOptions => _boundsOptions;
   OpenMapOptions({
+    this.interactionOptions,
     this.crs,
-    this.zoom,
+    this.initialZoom,
     this.rotation,
     this.debugMultiFingerGestureWinner,
     this.enableMultiFingerGestureRace,
@@ -136,12 +139,13 @@ class OpenMapOptions {
     this.swPanBoundary,
     this.nePanBoundary,
   })  : _bounds = null,
-        _center = center,
+        _initialCenter = center,
         _boundsOptions = null;
 
   OpenMapOptions.bounds({
     this.crs,
-    this.zoom,
+    this.initialZoom,
+    this.interactionOptions,
     this.rotation,
     this.debugMultiFingerGestureWinner,
     this.enableMultiFingerGestureRace,
@@ -166,7 +170,7 @@ class OpenMapOptions {
     FitBoundsOptions? boundsOptions,
     this.swPanBoundary,
     this.nePanBoundary,
-  })  : _center = null,
+  })  : _initialCenter = null,
         _boundsOptions = boundsOptions,
         _bounds = bounds;
 
@@ -185,34 +189,18 @@ class OpenMapOptions {
       keepAlive:
           keepAlive ?? def.keepAlive,
       crs: crs ?? def.crs,
-      center: _center ?? def.center,
+      initialCenter: _initialCenter ?? def.initialCenter,
+      interactionOptions: interactionOptions ?? def.interactionOptions,
       bounds: _bounds ?? def.bounds,
       boundsOptions: _boundsOptions ?? def.boundsOptions,
-      zoom: zoom ?? def.zoom,
-      rotation: rotation ?? def.rotation,
-      debugMultiFingerGestureWinner:
-          debugMultiFingerGestureWinner ?? def.debugMultiFingerGestureWinner,
-      enableMultiFingerGestureRace:
-          enableMultiFingerGestureRace ?? def.enableMultiFingerGestureRace,
-      rotationThreshold: rotationThreshold ?? def.rotationThreshold,
-      rotationWinGestures: rotationWinGestures ?? def.rotationWinGestures,
-      pinchZoomThreshold: pinchZoomThreshold ?? def.pinchZoomThreshold,
-      pinchZoomWinGestures: pinchZoomWinGestures ?? def.pinchZoomWinGestures,
-      pinchMoveThreshold: pinchMoveThreshold ?? def.pinchMoveThreshold,
-      pinchMoveWinGestures: pinchMoveWinGestures ?? def.pinchMoveWinGestures,
-      enableScrollWheel: enableScrollWheel ?? def.enableScrollWheel,
+      initialZoom: initialZoom ?? def.initialZoom,
+      initialRotation: rotation ?? def.initialRotation,
       minZoom: minZoom ?? def.minZoom,
       maxZoom: maxZoom ?? def.maxZoom,
-      interactiveFlags: interactiveFlags ?? def.interactiveFlags,
       onLongPress: onLongPress ?? def.onLongPress,
       onMapReady: onMapReady,
       onTap: onTap,
       onPositionChanged: onPositionChanged ?? def.onPositionChanged,
-      slideOnBoundaries: slideOnBoundaries ?? def.slideOnBoundaries,
-      adaptiveBoundaries: adaptiveBoundaries ?? def.adaptiveBoundaries,
-      screenSize: screenSize ?? def.screenSize,
-      swPanBoundary: swPanBoundary ?? def.swPanBoundary,
-      nePanBoundary: nePanBoundary ?? def.nePanBoundary,
     );
   }
 
@@ -245,7 +233,7 @@ class OpenMapOptions {
     if (_bounds != null) {
       return OpenMapOptions.bounds(
         crs: crs ?? this.crs,
-        zoom: zoom ?? this.zoom,
+        initialZoom: zoom ?? this.initialZoom,
         rotation: rotation ?? this.rotation,
         debugMultiFingerGestureWinner:
             debugMultiFingerGestureWinner ?? this.debugMultiFingerGestureWinner,
@@ -277,7 +265,7 @@ class OpenMapOptions {
     }
     return OpenMapOptions(
       crs: crs ?? this.crs,
-      zoom: zoom ?? this.zoom,
+      initialZoom: zoom ?? this.initialZoom,
       rotation: rotation ?? this.rotation,
       debugMultiFingerGestureWinner:
           debugMultiFingerGestureWinner ?? this.debugMultiFingerGestureWinner,
@@ -301,7 +289,7 @@ class OpenMapOptions {
       slideOnBoundaries: slideOnBoundaries ?? this.slideOnBoundaries,
       screenSize: screenSize ?? this.screenSize,
       adaptiveBoundaries: adaptiveBoundaries ?? this.adaptiveBoundaries,
-      center: _center,
+      center: _initialCenter,
       swPanBoundary: swPanBoundary ?? this.swPanBoundary,
       nePanBoundary: nePanBoundary ?? this.nePanBoundary,
     );
@@ -337,7 +325,7 @@ class OpenMapOptions {
   }) {
     return OpenMapOptions.bounds(
       crs: crs ?? this.crs,
-      zoom: zoom ?? this.zoom,
+      initialZoom: zoom ?? this.initialZoom,
       rotation: rotation ?? this.rotation,
       debugMultiFingerGestureWinner:
           debugMultiFingerGestureWinner ?? this.debugMultiFingerGestureWinner,

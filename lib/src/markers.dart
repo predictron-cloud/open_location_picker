@@ -64,7 +64,7 @@ class _MyCurrentLocationMarkerState extends State<MyCurrentLocationMarker> {
             currentMarker?.call(context, _currentLocation!) ??
                 Marker(
                   point: _currentLocation!,
-                  builder: (ctx) => Container(
+                  child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
@@ -122,8 +122,8 @@ class MapMarkers extends StatelessWidget {
           if (loadingPoint != null)
             Marker(
               point: loadingPoint,
-              anchorPos: AnchorPos.align(AnchorAlign.top),
-              builder: (ctx) => const CircularProgressIndicator(),
+              alignment: Alignment.topCenter,
+              child: const CircularProgressIndicator(),
             ),
           for (var loc in locations)
             marker?.call(context, loc) ??
@@ -131,8 +131,8 @@ class MapMarkers extends StatelessWidget {
                   point: loc.toLatLng(),
                   width: 40,
                   height: 40,
-                  anchorPos: AnchorPos.align(AnchorAlign.top),
-                  builder: (ctx) => Transform.translate(
+                  alignment: Alignment.topCenter,
+                  child: Transform.translate(
                     offset: const Offset(0, 5),
                     child: Icon(
                       Icons.fmd_good,
