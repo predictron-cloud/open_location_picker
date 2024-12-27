@@ -1,20 +1,21 @@
 {
-    "cSpell.words": [
-        "addressdetails",
-        "countrycodes",
-        "dedupe",
-        "Epsg",
-        "extratags",
-        "informations",
-        "jsonv",
-        "latlong",
-        "Linestring",
-        "namedetails",
-        "nodoc",
-        "Nominatim",
-        "Polyline",
-        "Polylines",
-        "snapshoot",
-        "viewbox"
-    ]
+  "cSpell.words": [
+    "addressdetails",
+    "countrycodes",
+    "dedupe",
+    "Epsg",
+    "extratags",
+    "informations",
+    "jsonv",
+    "latlong",
+    "Linestring",
+    "namedetails",
+    "nodoc",
+    "Nominatim",
+    "Polyline",
+    "Polylines",
+    "snapshoot",
+    "viewbox"
+  ],
+  "dart.flutterSdkPath": ".fvm\\versions\\3.24.3"
 }
