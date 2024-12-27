@@ -108,7 +108,8 @@ class ViewBox extends LatLngBounds {
   final bool bounded;
 
   ViewBox(LatLng southWest, LatLng northEast, [this.bounded = false])
-      : super(southWest, northEast);
+      : super.unsafe(south: southWest.latitude,west:  southWest.latitude,
+      east: northEast.longitude, north: northEast.latitude);
 
   Map<String, String> toJson() {
     return {

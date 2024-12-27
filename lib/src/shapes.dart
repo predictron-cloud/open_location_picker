@@ -53,7 +53,7 @@ class MapPolylines extends StatelessWidget {
             points: [...loc.shape.points],
             color: color,
             strokeWidth: 5,
-            isDotted: true,
+            pattern: const StrokePattern.dotted(),
           );
         }).toList();
         return PolylineLayer(

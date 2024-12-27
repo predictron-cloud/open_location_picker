@@ -98,11 +98,11 @@ class _MapAppBarState extends State<MapAppBar> {
   }
 
   void zoomIn() {
-    widget.moveTo(widget.controller.center, widget.controller.zoom + 1);
+    widget.moveTo(widget.controller.camera.center, widget.controller.camera.zoom + 1);
   }
 
   void zoomOut() {
-    widget.moveTo(widget.controller.center, widget.controller.zoom - 1);
+    widget.moveTo(widget.controller.camera.center, widget.controller.camera.zoom - 1);
   }
 
   Widget _doneButton(SelectedLocation location) {
@@ -163,7 +163,7 @@ class _MapAppBarState extends State<MapAppBar> {
                 stream: widget.controller.mapEventStream,
                 builder: (context, snapshot) {
                   return IconButton(
-                    onPressed: (widget.controller.zoom < 18) ? zoomIn : null,
+                    onPressed: (widget.controller.camera.zoom < 18) ? zoomIn : null,
                     icon: Icon(widget.zoomInIcon ?? Icons.zoom_in_rounded),
                   );
                 }),
@@ -171,7 +171,7 @@ class _MapAppBarState extends State<MapAppBar> {
               stream: widget.controller.mapEventStream,
               builder: (context, snapshot) {
                 return IconButton(
-                  onPressed: (widget.controller.zoom > 1) ? zoomOut : null,
+                  onPressed: (widget.controller.camera.zoom > 1) ? zoomOut : null,
                   icon: Icon(widget.zoomOutIcon ?? Icons.zoom_out_rounded),
                 );
               },

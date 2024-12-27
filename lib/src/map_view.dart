@@ -181,10 +181,10 @@ class _OpenStreetMapsState extends State<OpenStreetMaps>
     try {
       var settings = OpenMapSettings.of(context);
       if (widget.options.center != null) return;
-      if (widget.options.bounds != null) return;
+      if (widget.options.cameraConstraint != null) return;
       if (settings == null) return;
       if (settings.defaultOptions?.center != null) return;
-      if (settings.defaultOptions?.bounds != null) return;
+      if (settings.defaultOptions?.cameraConstraint != null) return;
       var locationCloser = settings.getCurrentLocation;
       if (locationCloser != null) {
         var res = await locationCloser();
@@ -202,15 +202,15 @@ class _OpenStreetMapsState extends State<OpenStreetMaps>
   void moveTo(LatLng destLocation, [double destZoom = 13]) {
     try {
       final latTween = Tween<double>(
-        begin: _controller.center.latitude,
+        begin: _controller.camera.center.latitude,
         end: destLocation.latitude,
       );
       final lngTween = Tween<double>(
-        begin: _controller.center.longitude,
+        begin: _controller.camera.center.longitude,
         end: destLocation.longitude,
       );
       final zoomTween = Tween<double>(
-        begin: _controller.zoom,
+        begin: _controller.camera.zoom,
         end: destZoom,
       );
 
@@ -242,11 +242,8 @@ class _OpenStreetMapsState extends State<OpenStreetMaps>
   }
 
   void fitBounds(LatLngBounds bounds) {
-    var target = _controller.centerZoomFitBounds(
-      bounds,
-      options: const FitBoundsOptions(padding: EdgeInsets.all(12.0)),
-    );
-    moveTo(target.center, target.zoom);
+    var target = _controller.fitCamera(CameraFit.bounds(bounds: bounds));
+    //TODO maybe return moveTo(target.center, target.zoom);
   }
 
   @override

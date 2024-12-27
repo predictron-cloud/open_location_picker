@@ -8,8 +8,8 @@ import 'map_view_settings.dart';
 var DEFAULT_LOCATION = LatLng(55.7504461, 37.6174943);
 
 /// Allows you to provide your map's starting properties for [initialZoom], [rotation]
-/// and [center]. Alternatively you can provide [bounds] instead of [center].
-/// If both, [center] and [bounds] are provided, bounds will take preference
+/// and [center]. Alternatively you can provide [cameraConstraint] instead of [center].
+/// If both, [center] and [cameraConstraint] are provided, bounds will take preference
 /// over [center].
 /// Zoom, pan boundary and interactivity constraints can be specified here too.
 ///
@@ -103,19 +103,18 @@ class OpenMapOptions {
   final bool? adaptiveBoundaries;
   final LatLng? _initialCenter;
   final InteractionOptions? interactionOptions;
-  final LatLngBounds? _bounds;
-  final FitBoundsOptions? _boundsOptions;
+  final CameraConstraint? _cameraConstraint;
   final LatLng? swPanBoundary;
   final LatLng? nePanBoundary;
+  final CameraConstraint? cameraConstraint;
 
   LatLng? get center => _initialCenter;
-  LatLngBounds? get bounds => _bounds;
-  FitBoundsOptions? get boundsOptions => _boundsOptions;
   OpenMapOptions({
     this.interactionOptions,
     this.crs,
     this.initialZoom,
     this.rotation,
+    this.cameraConstraint,
     this.debugMultiFingerGestureWinner,
     this.enableMultiFingerGestureRace,
     this.rotationThreshold,
@@ -138,11 +137,10 @@ class OpenMapOptions {
     LatLng? center,
     this.swPanBoundary,
     this.nePanBoundary,
-  })  : _bounds = null,
-        _initialCenter = center,
-        _boundsOptions = null;
+  })  : _cameraConstraint = null,
+        _initialCenter = center;
 
-  OpenMapOptions.bounds({
+  OpenMapOptions.cameraConstraint({
     this.crs,
     this.initialZoom,
     this.interactionOptions,
@@ -166,13 +164,11 @@ class OpenMapOptions {
     this.slideOnBoundaries,
     this.screenSize,
     this.adaptiveBoundaries,
-    required LatLngBounds bounds,
-    FitBoundsOptions? boundsOptions,
+    required this.cameraConstraint,
     this.swPanBoundary,
     this.nePanBoundary,
   })  : _initialCenter = null,
-        _boundsOptions = boundsOptions,
-        _bounds = bounds;
+        _cameraConstraint = cameraConstraint;
 
   MapOptions create({
     required void Function()? onMapReady,
@@ -183,16 +179,14 @@ class OpenMapOptions {
             onMapReady: onMapReady,
             onTap: onTap,
             settings: null) ??
-        MapOptions(center: DEFAULT_LOCATION);
+        MapOptions(initialCenter: DEFAULT_LOCATION);
     return MapOptions(
-      maxBounds: maxBounds ?? def.maxBounds,
       keepAlive:
           keepAlive ?? def.keepAlive,
       crs: crs ?? def.crs,
       initialCenter: _initialCenter ?? def.initialCenter,
       interactionOptions: interactionOptions ?? def.interactionOptions,
-      bounds: _bounds ?? def.bounds,
-      boundsOptions: _boundsOptions ?? def.boundsOptions,
+      cameraConstraint: _cameraConstraint ?? def.cameraConstraint,
       initialZoom: initialZoom ?? def.initialZoom,
       initialRotation: rotation ?? def.initialRotation,
       minZoom: minZoom ?? def.minZoom,
@@ -208,6 +202,7 @@ class OpenMapOptions {
     Crs? crs,
     double? zoom,
     double? rotation,
+    CameraConstraint? cameraConstraint,
     bool? debugMultiFingerGestureWinner,
     bool? enableMultiFingerGestureRace,
     double? rotationThreshold,
@@ -230,8 +225,8 @@ class OpenMapOptions {
     LatLng? swPanBoundary,
     LatLng? nePanBoundary,
   }) {
-    if (_bounds != null) {
-      return OpenMapOptions.bounds(
+    if (_cameraConstraint != null) {
+      return OpenMapOptions(
         crs: crs ?? this.crs,
         initialZoom: zoom ?? this.initialZoom,
         rotation: rotation ?? this.rotation,
@@ -257,8 +252,7 @@ class OpenMapOptions {
         slideOnBoundaries: slideOnBoundaries ?? this.slideOnBoundaries,
         screenSize: screenSize ?? this.screenSize,
         adaptiveBoundaries: adaptiveBoundaries ?? this.adaptiveBoundaries,
-        bounds: _bounds!,
-        boundsOptions: _boundsOptions,
+        cameraConstraint: _cameraConstraint!,
         swPanBoundary: swPanBoundary ?? this.swPanBoundary,
         nePanBoundary: nePanBoundary ?? this.nePanBoundary,
       );
@@ -296,8 +290,7 @@ class OpenMapOptions {
   }
 
   OpenMapOptions copyWithBounds({
-    required LatLngBounds bounds,
-    FitBoundsOptions? boundsOptions,
+    required CameraConstraint cameraConstraint,
     Crs? crs,
     double? zoom,
     double? rotation,
@@ -323,7 +316,7 @@ class OpenMapOptions {
     LatLng? swPanBoundary,
     LatLng? nePanBoundary,
   }) {
-    return OpenMapOptions.bounds(
+    return OpenMapOptions(
       crs: crs ?? this.crs,
       initialZoom: zoom ?? this.initialZoom,
       rotation: rotation ?? this.rotation,
@@ -349,8 +342,7 @@ class OpenMapOptions {
       slideOnBoundaries: slideOnBoundaries ?? this.slideOnBoundaries,
       screenSize: screenSize ?? this.screenSize,
       adaptiveBoundaries: adaptiveBoundaries ?? this.adaptiveBoundaries,
-      bounds: bounds,
-      boundsOptions: boundsOptions ?? _boundsOptions,
+      cameraConstraint: cameraConstraint,
       swPanBoundary: swPanBoundary ?? this.swPanBoundary,
       nePanBoundary: nePanBoundary ?? this.nePanBoundary,
     );

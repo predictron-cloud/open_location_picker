@@ -223,8 +223,8 @@ class OpenMapPicker extends StatelessWidget {
         if (value == null || value.boundingBox == null) {
           return options ?? OpenMapOptions();
         } else {
-          return options?.copyWithBounds(bounds: value.boundingBox!) ??
-              OpenMapOptions.bounds(bounds: value.boundingBox!);
+          return options?.copyWith(cameraConstraint: CameraConstraint.contain(bounds: value.boundingBox!)) ??
+              OpenMapOptions.cameraConstraint(cameraConstraint: CameraConstraint.contain(bounds: value.boundingBox!));
         }
       },
       onDone: (field, value) {
@@ -317,9 +317,9 @@ class MultiOpenMapPicker extends StatelessWidget {
         if (list.isEmpty) {
           return OpenMapOptions();
         } else {
-          return OpenMapOptions.bounds(
-            bounds:
-                LatLngBounds.fromPoints(list.map((e) => e.toLatLng()).toList()),
+          return OpenMapOptions(
+            cameraConstraint: CameraConstraint.contain(bounds:
+            LatLngBounds.fromPoints(list.map((e) => e.toLatLng()).toList())),
           );
         }
       },
