@@ -68,7 +68,7 @@ class OpenMapSettings extends InheritedWidget {
   ///   }
   /// }
   /// ```
-  final TileLayer Function(TileLayer defaultLayer)? tileLayer;
+  final Widget Function(Widget defaultLayer)? tileLayer;
 
   /// Limiting search results to
   final SearchFilters? searchFilters;

@@ -69,7 +69,7 @@ class OpenStreetMaps extends StatefulWidget {
   ///   }
   /// }
   /// ```
-  final TileLayer Function(TileLayer defaultLayer)? tileLayer;
+  final Widget Function(Widget defaultLayer)? tileLayer;
 
   /// call back on pressing to done button
   /// You can set it also using `OpenMapSettings`
